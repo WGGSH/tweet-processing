@@ -1,0 +1,10 @@
+* {
+  background: black;
+}
+
+.p5Canvas {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
