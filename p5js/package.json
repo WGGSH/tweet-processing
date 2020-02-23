@@ -1,12 +1,12 @@
 {
-  "name": "p5",
+  "name": "p5js",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "sync": "browser-sync start --server --files='./*.html, ./*.css'",
     "minify": "onchange ./js/main.js -- minify ./js/main.js",
-    "start": "concurrently \"npm run sync\" \"npm run minify\""
+    "min" : "onchange ./js/main.js -- node ./js/minify.js",
+    "start": "concurrently \"npm run sync\" \"npm run min\""
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +16,7 @@
     "minify": "^5.1.0",
     "onchange": "^6.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "p5": "^0.10.2"
+  }
 }

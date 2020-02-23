@@ -1,14 +1,18 @@
 t=0
 draw=_=>{
-  if (!t){
-    createCanvas(w=900,w)
+  if(!t++){
+    createCanvas(w=1200,w)
+    w/=2
   }
-  for(a of [BLEND,ADD]){
-    blendMode(a)
-    background(0,20)
+  clear()
+  translate(w,w)
+  fill(255,1)
+  i=0
+  while(i++<255){
+    j=0
+    while(j++<6){
+      a=PI/3*j+t/30
+      ellipse(w*cos(a),w*sin(a),i)
+    }
   }
-  t++
-  fill(255,255,0)
-
-  ellipse(mouseX,mouseY,100,100)
 }
