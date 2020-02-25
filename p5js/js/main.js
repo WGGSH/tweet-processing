@@ -1,18 +1,21 @@
 t=0
 draw=_=>{
   if(!t++){
-    createCanvas(w=1200,w)
-    w/=2
+    createCanvas(w=900,w)
   }
-  clear()
-  translate(w,w)
-  fill(255,1)
-  i=0
-  while(i++<255){
-    j=0
-    while(j++<6){
-      a=PI/3*j+t/30
-      ellipse(w*cos(a),w*sin(a),i)
-    }
+  background(0)
+
+  translate(w/2,w/2)
+  scale(1-t/10000)
+  noStroke()
+  fill(0,0,130)
+  rect(-w,-w,w*2,w*1)
+  fill(40,0,0)
+  rect(-w,0,w*2,w*1)
+  noFill()
+  stroke(255)
+  for (let i = 20; i < w; i+=3) {
+    rotate(t/5000000)
+    rect(-i*2,-i,i*4,i*2)
   }
 }
