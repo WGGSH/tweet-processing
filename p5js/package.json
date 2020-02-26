@@ -5,7 +5,7 @@
   "scripts": {
     "sync": "browser-sync start --server --files='./*.html, ./*.css'",
     "minify": "onchange ./js/main.js -- minify ./js/main.js",
-    "min" : "onchange ./js/main.js -- node ./js/minify.js",
+    "min": "onchange ./js/main.js -- node ./js/minify.js",
     "start": "concurrently \"npm run sync\" \"npm run min\""
   },
   "author": "",
