@@ -25,49 +25,38 @@ draw = _ => {
   rotateX(-mouseY/500)
   rotateY(mouseX/500)
   shTex.clear()
+  // shTex.background(0)
   shTex.shader(sh)
+  // shTex.rotate(t/20)
   sh.setUniform('t',t/60)
   sh.setUniform('r', [256,256])
+  // shTex.rect(0,0,256,256)
+  // shTex.circle(0,0,256)
+  // shTex.rect(0,0,width,height)
   shTex.quad(-1, -1, 1, -1, 1, 1, -1, 1);
 
   stroke(255)
   noStroke()
   texture(shTex)
   gl.disable(gl.DEPTH_TEST);
-
-
-  drawBinaryTree = (i) => {
-    if(i<=0){
-      return
-    }
-    push()
-    W=500
-    M=8
-    L=130
-    FA = 5
-    // rotateYReset() // maybe doesn't work good
-    // texture(img[i<M/2 ? 0 : 1])
-    // let rl = random(20)-10
-    let rl = 20
-    rect(-W/2/M*i,-(L/M+rl)*i,W/M*i,(L/M+rl)*i)
-    pop()
-
-    for(let j=0;j<3;j++){
-      push()
-      translate(0,-(L/M+rl)*i,0)
-      // myRotateY(TAU/3*j+random(TAU/32)*(sin(t/30)/2+.5))
-      rotateY(TAU/3*j+sin(t/30*0)/2+.5)
-      rotateX(PI/FA+sin(t/30*0)/2+.5)
-      drawBinaryTree(i-1)
-      // myPop()
-      pop()
-
-    }
-    return
-  }
-
-
-  drawBinaryTree(5)
-  // box(200)
+  // fill(255)
+  // rect(0,0,w,w)
+  box(200)
+  // sphere(200)
   pop()
+  // image(get(),0,0)
+  // filter(BLUR,3)
+  // rect(0,0,100,100)
+  // b=get()
+  // imageMode(CENTER)
+  // b.resize(w/4,w/4)
+  // b.resize(w*1.1,w*1.1)
+  // for(i=0;i<5;i++){
+  //   image(b,20*cos(TAU/5*i),20*sin(TAU/5*i))
+  // }
+  // for(i=0;i<8;i++){
+  //   x = 150*cos(t/30+TAU/8*i)
+  //   y = 150*sin(t/30+TAU/8*i)
+  //   image(c,-w/2+x,-w/2+y)
+  // }
 }
