@@ -35,42 +35,44 @@ draw=_=>{
     S=100
     S2=150
 
-    img=createImage(IW=256,IH=256)
-    colorMode(HSB)
-    img.loadPixels()
-    for(y=0;y<IH;y++){
-      ay = y/IH * 2 -1
-      for(x=0;x<IW;x++){
-        ax = x/IW * 2 -1
-        b=(10/(1-abs(ax))+3/(1-abs(ay)))/10
-        img.set(x,y,color(220,70-min(b,100),min(b,10)))
+    img=[]
+    for(i=0;i<36;i++){
+      img[i]=createImage(IW=256,IH=256)
+      colorMode(HSB)
+      img[i].loadPixels()
+      for(y=0;y<IH;y++){
+        ay = y/IH * 2 -1
+        for(x=0;x<IW;x++){
+          ax = x/IW * 2 -1
+          b=(10/(1-abs(ax))+3/(1-abs(ay)))/1
+          img[i].set(x,y,color(i*10,70-min(b,100),min(b,100)))
+        }
       }
+      img[i].updatePixels()
     }
-    img.updatePixels()
     seed = Math.floor(random(100))
   }
   randomSeed(seed)
 
   // orbitControl()
   push()
-  blendMode(SUBTRACT)
-  fill(5)
-  rect(-w,-w,w*2,w*2)
+  // blendMode(SUBTRACT)
+  // fill(5)
+  // rect(-w,-w,w*2,w*2)
   // rotateX(-mouseY/200)
   rotateY(-mouseX/200+t/200)
 
-  // clear()
+  clear()
   // background(100,10)
-  blendMode(SCREEN)
+  blendMode(EXCLUSION)
 
   gl.disable(gl.DEPTH_TEST);
   // rotateY(PI/2)
   // shearX(PI/4)
-  texture(img)
   // box(300)
   translate(0,w/3.5)
   rotateX(-PI/2)
-  for(let i=0;i<3;i++){
+  for(let i=0;i<1;i++){
     push()
     for(let j=0;j<12;j++){
       push()
@@ -78,6 +80,7 @@ draw=_=>{
       rotateZ(TAU/12*j)
       rotateY(PI/8*i+random()*0.3)
       translate((S+S2)*3/3,0)
+      texture(img[Math.floor(random(0,36))])
       drawObj(L*1.5,150,50,R)
       pop()
     }
