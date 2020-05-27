@@ -1,80 +1,88 @@
 t=0
 
-draw=_=>{
-  if(!t++){
-    createCanvas(w=900,w)
-    w/=2
-    p=[]
-  }
-  drawingContext.shadowBlur=0
-  drawingContext.shadowColor='black'
-  colorMode(RGB,255,255,255,100)
-  blendMode(BLEND)
-  // clear()
-  background(0,5)
-  blendMode(ADD)
-  strokeWeight(10)
-  colorMode(HSB,360,100,100,100)
+drawObj=(l,d,d2,r)=>{
+  push()
+  rotateZ(PI/2)
+  // fill(255)
+  for(let i=0;i<r;i++){
+    beginShape()
+    vertex(l*c(TAU/r*i),d,l*s(TAU/r*i),0,0)
+    vertex(l*c(TAU/r*(i+1)),d,l*s(TAU/r*(i+1)),IW,0)
+    vertex(l*c(TAU/r*(i+1)),-d,l*s(TAU/r*(i+1)),IW,IH)
+    vertex(l*c(TAU/r*i),-d,l*s(TAU/r*i),0,IH)
+    endShape(CLOSE)
 
-  // translate(w,w)
-  // scale(.5,.5)
-  // translate(-w*2,-w*2)
-
-  for(i=0;i<p.length;i++){
-    a=p[i]
-    a.t++
-    a.t2++
-    sp=a.pos.copy().add(a.vec.copy().mult(Math.max(a.t-60,0)*a.s))
-    tp=a.pos.copy().add(a.vec.copy().mult(Math.min(a.t,15)*a.s))
-    drawingContext.shadowBlur=30
-    drawingContext.shadowColor=color(a.h,50,50,100)
-    stroke(a.h,0,100,10)
-    line(sp.x,sp.y,tp.x,tp.y)
-
-    // if(!a.r){
-    //   if(tp.x<0 || tp.x>w){
-    //     p.push({
-    //       pos: tp.copy(),
-    //       vec: createVector(a.vec.x*-1,a.vec.y),
-    //       t: 0,
-    //       t2: a.t2,
-    //       s: a.s,
-    //       r: 1,
-    //     })
-    //     r=1
-    //   }
-    // }
-
-    if(a.t==15 && a.t2<150){
-      for(j=0;j<2;j++){
-        p.push({
-          pos: tp.copy(),
-          vec: a.vec.copy().rotate(PI/2.5*(j*2-1)+PI/5*random(-1,1)*0),
-          h: Math.floor(random(361)),
-          s: 10,
-          t: 0,
-          t2: a.t2,
-          r:0
-        })
-      }
-    }
-    if(a.t==60|| a.t2 >= 240){
-      console.log(a.t,a.t2)
-      p.splice(i,1)
+    for(let j=0;j<2;j++){
+      j2=j*2-1
+      beginShape()
+      vertex(l*c(TAU/r*i),j2*d,l*s(TAU/r*i),0,0)
+      vertex(l*c(TAU/r*(i+1)),j2*d,l*s(TAU/r*(i+1)),IW,0)
+      vertex(0,j2*(d+d2),0,0,IH)
+      endShape(CLOSE)
     }
   }
-
+  pop()
 }
 
-mouseClicked=_=>{
-  p.push({
-    pos: createVector(mouseX,mouseY),
-    vec: p5.Vector.random2D(),
-    h: Math.floor(random(361)),
-    s: 10,
-    t: 0,
-    t2:0,
-    r: 0,
-    c:[]
-  })
+draw=_=>{
+  if(!t++){
+    createCanvas(w=900,w,WEBGL)
+    gl = document.getElementById('defaultCanvas0').getContext('webgl');
+    c=cos
+    s=sin
+    R=6
+    L=30
+    S=100
+    S2=150
+
+    img=createImage(IW=256,IH=256)
+    colorMode(HSB)
+    img.loadPixels()
+    for(y=0;y<IH;y++){
+      ay = y/IH * 2 -1
+      for(x=0;x<IW;x++){
+        ax = x/IW * 2 -1
+        b=(10/(1-abs(ax))+3/(1-abs(ay)))/10
+        img.set(x,y,color(220,70-min(b,100),min(b,10)))
+      }
+    }
+    img.updatePixels()
+    seed = Math.floor(random(100))
+  }
+  randomSeed(seed)
+
+  // orbitControl()
+  push()
+  blendMode(SUBTRACT)
+  fill(5)
+  rect(-w,-w,w*2,w*2)
+  // rotateX(-mouseY/200)
+  rotateY(-mouseX/200+t/200)
+
+  // clear()
+  // background(100,10)
+  blendMode(SCREEN)
+
+  gl.disable(gl.DEPTH_TEST);
+  // rotateY(PI/2)
+  // shearX(PI/4)
+  texture(img)
+  // box(300)
+  translate(0,w/3.5)
+  rotateX(-PI/2)
+  for(let i=0;i<3;i++){
+    push()
+    for(let j=0;j<12;j++){
+      push()
+      j2=j<3 ? -1 : 1
+      rotateZ(TAU/12*j)
+      rotateY(PI/8*i+random()*0.3)
+      translate((S+S2)*3/3,0)
+      drawObj(L*1.5,150,50,R)
+      pop()
+    }
+    pop()
+  }
+  pop()
+  gl.enable(gl.DEPTH_TEST);
 }
