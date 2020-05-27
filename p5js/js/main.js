@@ -45,7 +45,8 @@ draw=_=>{
         for(x=0;x<IW;x++){
           ax = x/IW * 2 -1
           b=(10/(1-abs(ax))+3/(1-abs(ay)))/1
-          img[i].set(x,y,color(i*10,70-min(b,100),min(b,100)))
+          // img[i].set(x,y,color(i*10,min(b,100)-20,120-min(b,100)))
+          img[i].set(x,y,color(i*10,110-min(b,100),min(b,100)+30))
         }
       }
       img[i].updatePixels()
@@ -82,6 +83,8 @@ draw=_=>{
       translate((S+S2)*3/3,0)
       texture(img[Math.floor(random(0,36))])
       drawObj(L*1.5,150,50,R)
+      // blendMode(SCREEN)
+      // drawObj(L*1.5,150,50,R)
       pop()
     }
     pop()
