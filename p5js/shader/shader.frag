@@ -20,5 +20,5 @@ void main () {
     b=0.;
   }
 
-  gl_FragColor = vec4(hsb2rgb(h,s,b),1.);
+  gl_FragColor = vec4(p.x,p.y,0.,1.);
 }

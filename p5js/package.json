@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "sync": "browser-sync start --server --files='./*.html, ./*.css, ./*'",
+    "sync": "browser-sync start --server --no-open --files='*.html, *.css, ./js/*.js, ./shader/*.frag, ./shader/*.vert'",
     "minify": "onchange ./js/main.js -- minify ./js/main.js",
     "min": "onchange ./js/main.js -- node ./js/minify.js",
     "start": "concurrently \"npm run sync\" \"npm run min\""
