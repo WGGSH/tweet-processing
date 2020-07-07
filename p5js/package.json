@@ -5,7 +5,7 @@
   "scripts": {
     "sync": "browser-sync start --server --no-open --files='*.html, *.css, ./js/*.js, ./shader/*.frag, ./shader/*.vert'",
     "minify": "onchange ./js/main.js -- minify ./js/main.js",
-    "min": "onchange ./js/main.js -- node ./js/minify.js",
+    "min": "onchange ./js/main.js -- node --no-warnings ./js/minify.js",
     "start": "concurrently \"npm run sync\" \"npm run min\""
   },
   "author": "",
@@ -17,6 +17,7 @@
     "onchange": "^6.1.1"
   },
   "dependencies": {
+    "fs": "0.0.1-security",
     "p5": "^1.0.0"
   }
 }
