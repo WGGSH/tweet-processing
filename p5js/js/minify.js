@@ -3,7 +3,7 @@ const fs = require('fs')
 const readline = require('readline')
 
   const rs = fs.createReadStream('./js/main.js')
-  const ws = fs.createWriteStream('./js/main.bak.js')
+  const ws = fs.createWriteStream('./js/result.js')
 
 const rl = readline.createInterface({
   input: rs,
@@ -20,7 +20,7 @@ rl.on('line', (lineString) => {
 
 rl.on('close',() => {})
 
-minify('./js/main.bak.js')
+minify('./js/result.js')
   .then((result)=>{
     console.log('----- minified -----\n')
     console.log(result+'\n')
