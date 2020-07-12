@@ -1,59 +1,138 @@
 
-t=0
+t = 0
+tf=true
 
-draw=_=>{
+let previewStart
+preload=_=>{
+  sh = loadShader('shader/44.vert', 'shader/44.frag')
+}
+
+windowResized=_=>{
+  resizeCanvas(w=windowWidth,h=windowHeight)
+}
+
+addBall=(x,y,s)=>{
+  // balls.push(matter.makeBall(random(0,width),height/2,200))
+  balls.push(matter.makeBall(x,y,s))
+  balls.slice(-1)[0].hue=random()
+}
+
+draw = _ => {
   if(!t++){
-    createCanvas(w=900,w)
-    // w/=2
-    // blendMode(DIFFERENCE)
-    // drawingContext.shadowBlur=1
-    // drawingContext.shadowColor=color(10,0,0)
-    // noLoop()
-    // background(255)
-    blendMode(DIFFERENCE)
-    // noFill()
-    // stroke(0)
-    // strokeWeight(100)
-    // rectMode(CENTER)
+    createCanvas(w=windowWidth,h=windowHeight,WEBGL)
+    gl = document.getElementById('defaultCanvas0').getContext('webgl');
+
+    shTex= createGraphics(256,256,WEBGL)
+    shTex.noStroke()
+    blendMode(SCREEN)
+
+    matter.init()
+    matter.invertedGravity()
+    rectMode(CENTER)
+    balls = []
+    barriers=[]
+
+    // for(i=0;i<30;i++){
+    //   addBall(10)
+    // }
+    S=76
+    for(x=0;x<width;x+=S){
+      for(y=0;y<height;y+=S){
+        addBall(x,y,S-40+random(80))
+      }
+    }
+    // setInterval(addBall,30)
+
+    barrier = matter.makeBarrier(width/2, 0, width, 50, {
+      angle: 0
+    });
+    barriers.push(barrier);
+    barrier = matter.makeBarrier(width/2, height, width, 50, {
+      angle: 0
+    });
+    barriers.push(barrier);
+    barrier = matter.makeBarrier(0, height/2, height, 50, {
+      angle: PI/2
+    });
+    barriers.push(barrier);
+    barrier = matter.makeBarrier(width, height/2, height, 50, {
+      angle: PI/2
+    });
+    barriers.push(barrier);
   }
-  // if(t==2){
-  // alert('')
-  //
-  // }
+
+
   // clear()
-  // translate(w,w)
-  // rotate(t/20)
-  // translate(-w,-w)
-  // stroke(2,3,0)
-  circle(mouseX,mouseY,w/3)
-  // rect(w/2,w/2,w*sin(PI/80*t),w*sin(PI/90*t))
-  // line (w/2, w/2, w/2+w*sin(PI/80*t),w/2+w*cos(PI/80*t))
-  // circle(w,w,tan(PI/180*t)*2)
-  // line(w,w,w+sin(t*t/30),w)
-  // copy(0,0,w*2,w*2,sin(t/10)*1,cos(t/10)*1,w*2.00,w*2.00)
-  // copy(0,0,w*2,w*2,5,5,w*2.00,w*2.00)
-  // i=4
-  // while(i-->0){
-  // }
-  S=50*cos(t/90)
-  copy(0,0,w,w,-S,-S,w+S*2,w+S*2)
-  // copy(0,0,w,w,10,10,w-20,w-20)
-  // copy(w/4,w/4,w/2,w/2,w/4-20,w/4-20,w/2+40,w/2+40)
-  // copy(0,0,w*2,w*2,0,0,w*2.00,w*1.90)
-  // copy(0,0,w*2,w*2,0,0,w*2.00,w*2.10)
-  // copy(0,0,w*2,w*2,0,0,w*1.90,w*2.00)
-  // copy(0,0,w*2,w*2,0,0,w*2.10,w*2.00)
-}
+  background(0)
+  translate(-width/2,-height/2)
+  // stroke(0);
+  // strokeWeight(5);
+  // line(0, 0, width, 0);
+  // line(0, height, width, height);
+  // line(0, 0, 0, height);
 
-// t=0,draw=e=>{t++||(createCanvas(w=900,w),w/=2,blendMode(DIFFERENCE)),2==t&&alert(""),noFill(),stroke(255),strokeWeight(5),rectMode(CENTER),rect(w,w,2*w*sin(PI/80*t),2*w*sin(PI/90*t))}
+  // gl.disable(gl.DEPTH_TEST);
 
-t=0
-draw=_=>{
-  if(!t++){
-    createCanvas(w=900,w)
-    blendMode(DIFFERENCE)
+  shTex.shader(sh)
+  sh.setUniform('t',0)
+  sh.setUniform('r', [shTex.width,shTex.height])
+  sh.setUniform('param',200)
+  sh.setUniform('hue',0)
+  shTex.quad(-1,-1,1,-1,1,1,-1,1)
+  texture(shTex)
+  noStroke()
+  // stroke(255,0,0)
+
+  // drawingContext.shadowBlur=2
+  // drawingContext.shadowColor='blue'
+
+  // fill(50,0,0)
+
+  for (var j = balls.length - 1; j >= 0; j--) {
+    var ball = balls[j];
+    sh.setUniform('hue',ball.hue)
+    shTex.quad(-1,-1,1,-1,1,1,-1,1)
+    push()
+    size=2.5
+    scale(size,size)
+    translate(-ball.getX()/1.5,-ball.getY()/1.5)
+    // translate(ball.getX(),ball.getY())
+    ball.show();
+    pop()
+    if (ball.isOffCanvas()) {
+      matter.forget(ball);
+    }
   }
-  circle(mouseX,mouseY,w/3)
-  S=50*cos(t/90)
-  copy(0,0,w,w,-S,-S,w+S*2,w+S*2)
+
+  // for (var i = 0; i < barriers.length; i++) {
+  //   barriers[i].show();
+  // }
+
 }
+
+// keyPressed=_=>{
+//   save()
+// }
+
+// mouseClicked=_=>{
+//   tf=!tf
+// }
+
+function mouseDragged(){
+  matter.changeGravity((mouseX-pmouseX)/20,(mouseY-pmouseY)/20)
+}
+
+// function mousePressed() {
+//   previewStart = createVector(mouseX, mouseY);
+// }
+//
+// function mouseReleased() {
+//   var x = (previewStart.x + mouseX) / 2;
+//   var y = (previewStart.y + mouseY) / 2;
+//   var length = dist(previewStart.x, previewStart.y, mouseX, mouseY);
+//   var theta = atan2(mouseY - previewStart.y, mouseX - previewStart.x);
+//   var barrier = matter.makeBarrier(x, y, length, 10, {
+//     angle: theta
+//   });
+//   barriers.push(barrier);
+// }

@@ -5,7 +5,7 @@ tf=true
 
 let previewStart
 preload=_=>{
-  sh = loadShader('shader/44.vert', 'shader/44.frag')
+  sh = loadShader('shader/shader.vert', 'shader/shader.frag')
 }
 
 windowResized=_=>{
