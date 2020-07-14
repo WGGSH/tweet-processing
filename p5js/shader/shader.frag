@@ -5,61 +5,28 @@ uniform float t;
 uniform vec2 r;
 uniform float param;
 uniform float hue;
+uniform float dist;
+uniform float powVal;
+
 const float PI  = 3.141592653589793;
 const float PI2 = PI * 2.;
 
-vec3 hsb2rgb(float h, float s, float v) {
-  return ((clamp(abs(fract(h+vec3(0,2,1)/3.)*6.-3.)-1.,0.,1.)-1.)*s+1.)*v;
+
+// ref: https://qiita.com/keim_at_si/items/c2d1afd6443f3040e900
+vec3 hsb2rgb(float h, float s, float b) {
+  return ((clamp(abs(fract(h+vec3(0,2,1)/3.)*6.-3.)-1.,0.,1.)-1.)*s+1.)*b;
+}
+
+//  https://qiita.com/7CIT/items/fe33b9b341b9918b6c3d#%E8%A7%92%E4%B8%B8%E9%95%B7%E6%96%B9%E5%BD%A2
+float roundrect(vec2 p, vec2 size, float radius){
+  vec2 d = abs(p) - size + radius;
+  return min(max(d.x, d.y), 0.0) + length(max(d,0.0))-radius;
 }
 
 void main () {
-  /* vec2 p = -1. + 2. * gl_FragCoord.xy / r.xy; */
   vec2 p = (gl_FragCoord.xy * 2.0 - r) / min(r.x, r.y);
-  /* float s = sin(PI/2.*(1.-t)); */
-  /* float c = cos(PI/2.*(1.-t)); */
-  /* mat2 m = mat2(c,s,-s,c); */
-  /* p *=m; */
-  /* gl_FragColor = vec4(uv.x/2.+.5,uv.y/2.+.5,sin(t)/2.+.5,1.); */
-  /* float h = 0.; */
-  /* float s = .9-cos(PI*p.x*4.)/3.-.0; */
-  /* float b = cos(PI*p.x*4.)/2.+.5-abs(p.y); */
-  /* float b = 1./abs(.5-p.x)/200. + 1./abs(.5+p.x)/200.; */
-  float b=0.;
-  /* if(abs(p.y)<0.5){ */
-  /*   b = pow(abs(1.0/(p.x*p.x)),1.)/param; */
-  /* }else { */
-  /*   float px = p.x; */
-  /*   float py = p.y-.5; */
-  /*   b += pow(abs(1.0/(px*px+py*py)),1.)/param; */
-  /*   py = p.y+.5; */
-  /*   b += pow(abs(1.0/(px*px+py*py)),1.)/param; */
-  /* } */
+  float val=0.;
+  val=pow(abs(1./roundrect(p, vec2(dist), 0.2)),powVal)/param;
 
-  /* b=pow(1./(p.x*p.x+p.y*p.y),2.)/param; */
-  /* b=pow(1.*(p.x*p.x+p.y*p.y)+.1,3.2) / param*200.; */
-  b=pow(500./(p.x*p.x+p.y*p.y),0.5) / param*.5;
-  if(b>1.){
-    b=1.;
-  }
-  /* b-=.3; */
-  /* float b = */
-    /* pow(1.0/abs(-t*2.+1.0-p.x)/param,1.); */
-    /* pow(1.0/abs(p.x)/param,1.); */
-    /* pow(1./abs(-0.5-p.x)/param,2.0); */
-    /* pow(1./abs(1.-p.y)/param,1.0)+ */
-    /* pow(1./abs(1.+p.y)/150.,1.0); */
-    /* pow(1./abs(p.x-p.y)/param,1.0); */
-    /* pow(1./abs(1.-p.x)/200.,0.5)+ */
-    /* pow(1./abs(1.-p.x)/200.,0.5)+ */
-  /* if(abs(p.x)>.3){ */
-  /*   b=0.; */
-  /* } */
-  /* if (b<.1){ */
-  /*   b=0.; */
-  /* } */
-
-  /* gl_FragColor = vec4(vec3(b,b/3.,b),1.); */
-  /* gl_FragColor = vec4(hsb2rgb(.8,1.-b/5.,b),1.); */
-  /* gl_FragColor = vec4(hsb2rgb(hue,0.8-b/15.,b),1.); */
-  gl_FragColor = vec4(hsb2rgb(hue,1.-b,b),1.);
+  gl_FragColor = vec4(hsb2rgb(hue,1.5-val/5.,val),1.);
 }
