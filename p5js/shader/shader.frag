@@ -36,8 +36,10 @@ void main () {
   /* val=pow(abs(1./roundrect(p, vec2(dist), 0.2)),powVal)/param; */
   /* val=pow(abs(1./poly(p, 3.)),powVal)/param; */
   /* val=0.01/abs(poly(p,3.)-dist)*10.; */
-  val=pow(1./abs(poly(p,3.)-dist),powVal)/param;
+  /* val=pow(1./abs(poly(p,4.)-dist),powVal)/param; */
+  val = 1.;
 
   /* gl_FragColor = vec4(hsb2rgb(hue,1.5-val/5.,val),1.); */
-  gl_FragColor = vec4(hsb2rgb(hue,1.-val/20.,val),1.);
+  /* gl_FragColor = vec4(hsb2rgb(hue,1.-val/20.,val),1.); */
+  gl_FragColor = vec4(1.,1.,1.,1.);
 }
