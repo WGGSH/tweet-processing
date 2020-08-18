@@ -1,105 +1,67 @@
 
 
 glenable=false
-dc=false
+dc=true
 t = 0
 draw = _ => {
   if(!t++){
-    createCanvas(w=900,h=900,P2D)
-    // gl = document.getElementById('defaultCanvas0').getContext('webgl');
-    g = createGraphics(w,h,WEBGL)
-
-    // gl = g.getContext('webgl');
-
-
-    img = createImage(iw=128,iw)
-    // img.loadPixels()
+    createCanvas(w=900,h=900,WEBGL)
+    R=60
+    N=10
     // colorMode(HSB)
-    // for(y=0;y<iw;y++){
-    //   ay = y/iw * 2 -1
-    //   for(x=0;x<iw;x++){
-    //     ax = x/iw * 2 -1
-    //     img.set(x,y,color(120,10,100-5/(abs(ax)+abs(ay))*10))
-    //   }
-    // }
-    // img.updatePixels()
   }
-  img.loadPixels()
-  colorMode(HSB,360,100,100)
-  s=0
-  for(y=0;y<iw;y++){
-    ay = y/iw * 2 -1
-    for(x=0;x<iw;x++){
-      ax = x/iw * 2 -1
-      h = sin(t/80)*50+180
-      s = 100*(sin(s/150)/2+.5)
-      b = 100-4/(abs(pow(ax,4))+abs(pow(ay,4)))*20*(sin(s/150)/2+.5)
-      // b = 100
-      img.set(x,y,color(h,s,b))
-    }
-  }
-  img.updatePixels()
+
+  // noFill()
+  // stroke(255)
+  normalMaterial()
+
+  // fill(0)
+  // stroke(255)
 
   clear()
+  orbitControl()
 
-  g.blendMode(SCREEN)
 
-  g.clear()
+  for(x=-N;x<=N;x++){
+    for(y=-N;y<=N;y++){
+      for(z=-N;z<=N;z++){
+        push()
+        translate(R*x,R*y,R*z)
+        // if(0.01/x+y*y+z*z<t%(8*8*8))
 
-  // orbitControl()
-  g.push()
-  g.rotateX(t/200)
-  g.rotateY(t/600)
-  // translate(0,0,t*20)
-  //
-  // translate(0,0,0)
-  if(glenable){
-    gl.disable(gl.DEPTH_TEST);
-  }
+        // fill(x*x*y*y*z*z/pow(N,3)*360/8,100,100)
 
-  // g.noFill()
-  // scale(1,1,4/300)
-
-  g.texture(img)
-  g.box(300)
-  g.rotateX(t/500)
-  g.rotateY(t/200)
-  g.box(200)
-  g.pop()
-
-  g.blendMode(BLEND)
-
-  if(glenable){
-    gl.enable(gl.DEPTH_TEST);
-  }
-  g.noStroke()
-  g.fill(0,.05)
-  g.rect(-w/2,-w/2,w,w)
-
-  if(dc){
-    drawingContext.shadowBlur=100
-    drawingContext.shadowColor=color(h,s,b)
-  }
-
-  image(g,0,0)
-}
-
-mouseClicked=_=>{
-  if(mouseButton==LEFT){
-    glenable=!glenable
-
-    if(glenable){
-      gl = document.getElementById('glgraphics').getContext('webgl');
+        // if(x*x+y*y+z*z<t)
+        // if(1*(x*x)*(y*y^t-t)/(z*z*z)>(sin(t/20)*50+50)%(pow(N,3)))
+        // if(1*(x*x)*(y*y-t)/(z*z)>(sin(1/t)*100)%(pow(N,3)))
+        if(1*(pow(x,4))*(pow(y,4))*(pow(z,4))<(t*t*500))
+        // if(1/abs(x)+1/(y)+1/(z)>t/400)
+        // if(tan(x*y*z+t/200) <3)
+        box(R*.97)
+        pop()
+      }
     }
   }
 }
 
-keyPressed=_=>{
-  if(key=='z'){
-    dc=!dc
-    if(!dc){
-      drawingContext.shadowBlur=0
-      drawingContext.shadowColor='black'
-    }
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
