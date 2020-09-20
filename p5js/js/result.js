@@ -1,49 +1,78 @@
 
 
-// glenable=false
-// dc=true
 t = 0
 draw = _ => {
   if(!t++){
-    createCanvas(w=900,w)
-    // w/=2
+    createCanvas(w=900,w,WEBGL)
 
-    B=blendMode
-    S=sin
-    C=cos
-    N=130
+    tex=createGraphics(w,w,WEBGL)
+    angleMode(DEGREES)
+    tex.angleMode(DEGREES)
   }
-  B(BLEND)
-  background(0,8)
-  B(ADD)
 
-  translate(w/2,w/2)
+  angleX=(w/2-mouseY)
+  angleY=(w/2-mouseX)
+  angleX2=(angleX+3600)%360
+  angleY2=(angleY+3600)%360
+  isFrontX=angleX2 <= 90 || angleX2 >= 270
+  isFrontY=angleY2 <= 90 || angleY2 >= 270
+  xCnt=Math.floor((angleX+90)/360)
+  yCnt=Math.floor((angleY+90)/360)
+  // angleX=0
+  // angleY=t/60
+
+  tex.push()
+
+  // console.log(isFrontY,isFrontX)
+  console.log(yCnt,xCnt)
+
+  tex.rotateX(angleX2*(isFrontX*2-1))
+  tex.rotateY(angleY2*(isFrontY*2-1))
+  tex.clear()
+  tex.noFill()
+  tex.stroke(255)
+  tex.strokeWeight(5)
+  tex.translate(0,0,-400*5/2*(isFrontY*2-1)*(isFrontX*2-1))
+  tex.rotateY(t)
+  tex.rotateZ(t/1.5)
+  // tex.scale(1,1,5)
+  // tex.box(400)
 
 
+  switch(isFrontX*2+isFrontY){
+    case 0:
+      tex.torus(400,200,12+xCnt*3,12+yCnt*3)
+      break;
+    case 1:
+      tex.cylinder(400,400,12+xCnt*3,12+yCnt*3)
+      break;
+    case 2:
+      tex.cone(400,600,12+xCnt*3,12+yCnt*3)
+      break;
+    case 3:
+      tex.sphere(400,12+xCnt*3,12+yCnt*3)
+      break;
+  }
+
+  tex.pop()
+
+  clear()
+
+  // orbitControl()
+
+  rotateX(angleX)
+  rotateY(angleY)
+
+  texture(tex)
+  circle(0,0,600)
+  fill(0)
+  // push()
+  // translate(0,0,-1)
+  // circle(0,0,600)
+  // pop()
   noFill()
-  i=N
-  while(i--){
-  // for(i=0;i<N;i++){
-    // stroke(10,N-i*i,i)
-    // stroke(10,N*2-i*4,i)
-    stroke(N*2-i*4,40,i)
-    a=t/N*5+i/N+mouseX/N
-    b=t/N*8+i/N+mouseY/N
-    x=w*C(a)
-    y=w*S(b)
-    // bezier(-w*C(a),-w*S(a),mouseX,mouseY,w/2*S(a),w/2*C(a),w*C(b),w*S(b))
-    bezier(-x,-y,0,0,y/2,x/2,x,y)
-    // a=t/6*3+i/99
-    // b=t/6*2+i/99
-    // bezier(w*cos(a+PI),w*sin(a+PI),100,100,100,100,w*cos(b+PI),w*sin(b+PI))
+  for(i=0;i<128;i++){
+    stroke(255-i*2)
+    circle(0,0,600+i)
   }
-
-
 }
-
-// t=0,draw=(e=>{for(t++||(createCanvas(w=900,w),p=[],B=blendMode,S=sin,C=cos,N=99),B(BLEND),background(0,8),B(ADD),translate(w/2,w/2),noFill(),i=0;i<N;i++)stroke(N-i,20,i),a=t/N*7+i/N,b=t/N*8+i/N,bezier(-w*C(a),-w*S(a),mouseX,mouseY,w/2*S(a),w/2*C(a),w*C(b),w*S(b))})
-
-// t=0,draw=(e=>{for(t++||(createCanvas(w=900,w),B=blendMode,S=sin,C=cos,N=99),B(BLEND),background(0,8),B(ADD),translate(w/2,w/2),noFill(),i=N;i--;)stroke(10,2*N-4*i,i),a=t/N*7+i/N,b=t/N*8+i/N,x=w*C(a),y=w*S(a),bezier(-x,-y,mouseX,mouseY,y/2,x/2,x,y)});
-
-
-// t=0,draw=(e=>{for(t++||(createCanvas(w=900,w),B=blendMode,S=sin,C=cos,N=130),B(BLEND),background(0,8),B(ADD),translate(w/2,w/2),noFill(),i=N;i--;)stroke(2*N-4*i,40,i),a=t/N*5+i/N+mouseX/N,b=t/N*8+i/N+mouseY/N,x=w*C(a),y=w*S(b),bezier(-x,-y,0,0,y/2,x/2,x,y)})
